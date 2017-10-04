@@ -13,7 +13,9 @@ public class Cliente implements Runnable {
 	}
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
-		Cliente cli = new Cliente("127.0.0.1", 6789);
+		Scanner teclado = new Scanner(System.in);
+		System.out.println("Informe IP e Porta, respectivamente!");
+		Cliente cli = new Cliente(teclado.nextLine(), teclado.nextInt());
 		Thread t = new Thread(cli);
 		t.start();
 

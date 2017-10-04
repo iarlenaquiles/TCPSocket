@@ -12,8 +12,9 @@ public class Server implements Runnable {
 	public String ip;
 	public String serverName;
 
-	public Server(String serverName, int port) {
+	public Server(String serverName, String ip, int port) {
 		this.qtdReq = 0;
+		this.ip = ip;
 		this.port = port;
 		this.serverName = serverName;
 	}
@@ -27,7 +28,7 @@ public class Server implements Runnable {
 	}
 
 	public String getIp() {
-		return "127.0.0.1";
+		return this.ip;
 	}
 
 	public void setIp(String ip) {
@@ -47,13 +48,15 @@ public class Server implements Runnable {
 
 				Socket connectionSocket = socketServidor.accept();
 				saida = new PrintStream(connectionSocket.getOutputStream());
-				System.out.println("Cliente conectado: " + connectionSocket.getInetAddress().getHostAddress());
+				System.out.println("Cliente conectado: " + connectionSocket.getInetAddress().getHostAddress()
+						+ " ao servidor: " + this.serverName);
 				Scanner entrada = new Scanner(connectionSocket.getInputStream());
 
 				while (entrada.hasNext()) {
 					texto = entrada.nextLine();
 					if (texto.equals("/REQNUM")) {
 						saida.println("Quantidade de requisições: " + this.qtdReq);
+						System.out.println("Entrada: " + texto);
 					} else if (texto.equals("/UPTIME")) {
 						long total = System.currentTimeMillis() - tempoInicio;
 						saida.println("Tempo de execução do " + this.serverName + ": "
